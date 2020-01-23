@@ -1,3 +1,6 @@
+const {baseRoleId} = require('../config/config');
+
+
 module.exports = {
     name: 'makeRules',
     aliases: ['rules', 'rule'],
@@ -6,17 +9,19 @@ module.exports = {
     args: 1,
     cooldown: 5,
     execute(message, args) {
-        console.log(args);
         message.delete();
         const rulesMessage = message.channel.messages.fetch(args[0]).then(message => {
-            const filter = (reaction, user) => {
-                return ['✅', '❎'].includes(reaction.emoji.name)
-            };
+            const filter = () => true;
 
             const collector = message.createReactionCollector(filter);
 
             collector.on('collect', (reaction) => {
                 message.channel.send('Roger that!');
+                const baseRole = message.guild.roles.get(baseRoleId);
+                const reactingMember = message.guild.members.get(reaction.users.first().id);
+
+                reactingMember.roles.add(baseRole);
+
                 reaction.message.reactions.removeAll();
             });
         }).catch(reason => console.log(reason.messages));
