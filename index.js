@@ -1,8 +1,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const {prefix, token} = require('./config/config');
-const fetch = require('node-fetch');
-
+const mysql = require('mysql');
+const mysqlConfig = require('./config/mysql');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -14,6 +14,10 @@ for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command)
 }
+
+//Mysql connection
+const con = mysql.createConnection(mysqlConfig);
+con.connect();
 
 // Launch event
 client.once('ready', () => {
