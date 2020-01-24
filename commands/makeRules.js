@@ -16,7 +16,6 @@ module.exports = {
             const collector = message.createReactionCollector(filter);
 
             collector.on('collect', (reaction) => {
-                message.channel.send('Roger that!');
                 const baseRole = message.guild.roles.get(baseRoleId);
                 const reactingMember = message.guild.members.get(reaction.users.first().id);
 
