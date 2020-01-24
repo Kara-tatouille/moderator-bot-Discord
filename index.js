@@ -4,6 +4,8 @@ const {prefix, token} = require('./config/config');
 const mysql = require('mysql');
 const mysqlConfig = require('./config/mysql');
 const handleXp = require('./helper/handleXp');
+const handleLevelUp = require('./helper/handleLevelUp');
+
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -27,7 +29,8 @@ client.once('ready', () => {
 
 // Message event
 client.on('message', message => {
-    handleXp(message.author, connection);
+    handleXp(message, connection);
+    handleLevelUp(message, connection);
     // Early return if message doesn't start with prefix or author is a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 

@@ -1,5 +1,12 @@
 {
     "token": "",
     "prefix": "",
-    "baseRoleId": ""
+    "grades": {
+        "baseRoleId": "",
+        "grade1Id": "",
+        "grade2Id": "",
+        "grade3Id": "",
+        "grade4Id": "",
+        "grade5Id": ""
+    }
 }
