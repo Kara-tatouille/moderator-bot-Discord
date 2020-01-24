@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 const {prefix, token} = require('./config/config');
 const mysql = require('mysql');
 const mysqlConfig = require('./config/mysql');
+const handleXp = require('./helper/handleXp');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -16,20 +17,21 @@ for (const file of commandFiles) {
 }
 
 //Mysql connection
-const con = mysql.createConnection(mysqlConfig);
-con.connect();
+const connection = mysql.createConnection(mysqlConfig);
+connection.connect();
 
 // Launch event
 client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+    console.log(`Logged in as "${client.user.tag}"!`);
 });
 
 // Message event
 client.on('message', message => {
+    handleXp(message.author, connection);
     // Early return if message doesn't start with prefix or author is a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-    // Retrive command name and arguments from the message
+    // Retrieve command name and arguments from the message
     const args = message.content.slice(prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
@@ -85,7 +87,7 @@ client.on('message', message => {
 
     /*/- Launch the magic! -/*/
     try {
-        command.execute(message, args);
+        command.execute(message, args, connection);
     } catch (error) {
         console.error(error);
         message.reply('there was an error trying to execute that command!');
