@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const mysqlConfig = require('./config/mysql');
 const handleXp = require('./helper/handleXp');
 const handleLevelUp = require('./helper/handleLevelUp');
-
+const handleSuggestion = require('./helper/handleSuggestion');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -29,8 +29,14 @@ client.once('ready', () => {
 
 // Message event
 client.on('message', message => {
-    handleXp(message, connection);
-    handleLevelUp(message, connection);
+    if (message.channel.type !== 'text') {
+        handleSuggestion(message);
+    } else {
+        handleXp(message, connection);
+        handleLevelUp(message, connection);
+    }
+
+
     // Early return if message doesn't start with prefix or author is a bot
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 

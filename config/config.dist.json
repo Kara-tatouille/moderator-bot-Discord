@@ -1,6 +1,7 @@
 {
     "token": "",
     "prefix": "",
+    "suggestionChannelId": "",
     "grades": {
         "baseRoleId": "",
         "grade1Id": "",
