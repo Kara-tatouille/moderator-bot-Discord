@@ -1,4 +1,4 @@
-#What does this bot do?
+# What does this bot do?
 
 This bot count each time someone post a message and gives xp. Then grant a role depending on your xp. The steps are:
 - 0xp - 20xp
@@ -13,7 +13,7 @@ This bot count each time someone post a message and gives xp. Then grant a role 
 
 This bot also grant a base role to anyone who react to a specific message (see commands).
 
-#Commands
+# Commands
 
 ```
 makeRules <message-ID>
@@ -30,7 +30,7 @@ ping
 ```
 Pong!
 
-#How to install
+# How to install
 
 - Run `npm install`
 
