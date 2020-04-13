@@ -4,13 +4,16 @@ const {baseRoleId} = require('../config/config');
 module.exports = {
     name: 'makeRules',
     aliases: ['rules', 'rule'],
-    description: 'Make a message into a rule message',
+    description: 'Make a message into a rule message, only avalible to administrators.',
     usage: '<message ID>',
     args: 1,
+    guildOnly: true,
     cooldown: 5,
     execute(message, args) {
+        if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
+
         message.delete();
-        const rulesMessage = message.channel.messages.fetch(args[0]).then(message => {
+        message.channel.messages.fetch(args[0]).then(message => {
             const filter = () => true;
 
             const collector = message.createReactionCollector(filter);

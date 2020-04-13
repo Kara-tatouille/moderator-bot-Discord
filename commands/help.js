@@ -5,8 +5,10 @@ module.exports = {
     description: 'List all of my commands or info about a specific command.',
     aliases: ['commands'],
     usage: '<command>',
+    guildOnly: true,
     cooldown: 5,
     execute(message, args) {
+        if (!message.member.hasPermission("KICK_MEMBERS")) return message.react('❌');
         const data = [];
         const {commands} = message.client;
 
