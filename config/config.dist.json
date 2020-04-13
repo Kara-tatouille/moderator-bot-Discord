@@ -1,14 +1,16 @@
 {
     "token": "",
     "prefix": "",
+    "suggestionChannelId": "",
+    "bonta": "",
+    "brakmar": "",
     "grades": {
-        "bonta": "",
-        "brakmar": "",
         "baseRoleId": "",
         "grade1Id": "",
         "grade2Id": "",
         "grade3Id": "",
         "grade4Id": "",
-        "grade5Id": ""
+        "grade5Id": "",
+        "muted": ""
     }
 }

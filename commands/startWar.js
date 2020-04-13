@@ -1,15 +1,19 @@
-const {grades} = require('../config/config.json');
+const {bonta, brakmar} = require('../config/config.json');
 
 
 module.exports = {
     name: 'start-war',
-    description: 'Create a war',
+    description: 'Create a war, only avalible to administrators.',
     cooldown: 5,
     usage: '',
     args: 0,
+    guildOnly: true,
     aliases: ['pong'],
-    async execute(message, args)
+    async execute(message)
     {
+        if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
+
+        message.delete();
         const warMessage = await message.channel.send('Chose your side!');
 
         const filter = () => true;
@@ -17,16 +21,24 @@ module.exports = {
         const collector = warMessage.createReactionCollector(filter);
 
         collector.on('collect', (reaction) => {
-            const bontaRole = message.guild.roles.fetch(grades.bonta);
-            const brakmarRole = message.guild.roles.fetch(grades.brakmar);
-            const reactingMember = message.guild.members.fetch(reaction.users.last().id);
-
             switch (reaction.emoji.name) {
-                case ':bonta:':
-                    reactingMember.roles.add(bontaRole);
+                case 'bonta':
+                    reaction.users.fetch().then(users => {
+                        message.guild.members.fetch(users.last()).then(member => {
+                            message.guild.roles.fetch(bonta).then(bontaRole => {
+                                member.roles.add(bontaRole);
+                            })
+                        })
+                    });
                     break;
-                case ':brakmar:':
-                    reactingMember.roles.add(brakmarRole);
+                case 'brakmar':
+                    reaction.users.fetch().then(users => {
+                        message.guild.members.fetch(users.last()).then(member => {
+                            message.guild.roles.fetch(brakmar).then(brakmarRole => {
+                                member.roles.add(brakmarRole);
+                            })
+                        })
+                    });
                     break;
                 default:
                     reaction.remove();

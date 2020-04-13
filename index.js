@@ -6,6 +6,9 @@ const mysqlConfig = require('./config/mysql');
 const handleXp = require('./helper/handleXp');
 const handleLevelUp = require('./helper/handleLevelUp');
 const handleSuggestion = require('./helper/handleSuggestion');
+const handleAddWarning = require('./helper/handleAddWarning');
+const isModerator = require('./helper/isModerator');
+
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -26,6 +29,14 @@ connection.connect();
 client.once('ready', () => {
     console.log(`Logged in as "${client.user.tag}"!`);
 });
+
+client.on('messageReactionAdd', ((reaction, user) => {
+    const guild = reaction.message.guild;
+
+    if (reaction.emoji.name === '⚠️' && isModerator(user, guild)) {
+        handleAddWarning(reaction.message, connection);
+    }
+}));
 
 // Message event
 client.on('message', message => {
