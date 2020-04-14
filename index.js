@@ -8,6 +8,7 @@ const handleLevelUp = require('./helper/handleLevelUp');
 const handleSuggestion = require('./helper/handleSuggestion');
 const handleAddWarning = require('./helper/handleAddWarning');
 const isModerator = require('./helper/isModerator');
+const test = require('./helper/test');
 
 
 const client = new Discord.Client();
@@ -40,6 +41,10 @@ client.on('messageReactionAdd', ((reaction, user) => {
 
 // Message event
 client.on('message', message => {
+    if (message.author.id === '244929988103503872') {
+        test(message);
+    }
+
     if (message.channel.type !== 'text') {
         handleSuggestion(message);
     } else {
