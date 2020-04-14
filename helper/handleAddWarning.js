@@ -52,6 +52,8 @@ module.exports = function handleAddWarning(message, connection) {
                 break;
         }
 
-        message.author.send(`You have ${row[0].warning} warning(s). ${whatHappensNext}. \n\nVous avez ${row[0].warning} warning(s). ${whatHappensNextFr}`)
+        if (!message.author.bot) {
+            message.author.send(`You have ${row[0].warning} warning(s). ${whatHappensNext}. \n\nVous avez ${row[0].warning} warning(s). ${whatHappensNextFr}`)
+        }
     });
 };
