@@ -4,6 +4,8 @@ const quote = require('./quote');
 const sendToBotChannel = require('./sendToBotChannel');
 
 module.exports = function handleAddWarning(message, connection) {
+    if (message.member.hasPermission('KICK_MEMBERS') || message.author.bot) return;
+
     connection.query(`SELECT * FROM dofus.user WHERE discord_id = ${message.author.id}`, (err, row) => {
         if (row.length === 0) {
             connection.query(`INSERT INTO dofus.user (discord_id, username, warning) VALUES ('${message.author.id}', '${message.author.username}', '1')`)
