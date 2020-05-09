@@ -2,7 +2,7 @@ const {grades} = require('../config/config');
 
 
 module.exports = function handleLevelUp(message, connection) {
-    connection.query(`SELECT id, discord_id, username, xp FROM dofus.user WHERE discord_id = ${message.author.id}`, (err, row) => {
+    connection.query(`SELECT id, discord_id, xp FROM dofus.user WHERE discord_id = ${message.author.id}`, (err, row) => {
 
         if (row.length === 0) {
             return;

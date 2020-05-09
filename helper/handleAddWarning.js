@@ -8,7 +8,7 @@ module.exports = function handleAddWarning(message, connection) {
 
     connection.query(`SELECT * FROM dofus.user WHERE discord_id = ${message.author.id}`, (err, row) => {
         if (row.length === 0) {
-            connection.query(`INSERT INTO dofus.user (discord_id, username, warning) VALUES ('${message.author.id}', '${message.author.username}', '1')`)
+            connection.query(`INSERT INTO dofus.user (discord_id, warning) VALUES ('${message.author.id}', '1')`)
         } else {
             connection.query(`UPDATE dofus.user SET warning = warning + 1 WHERE discord_id = ${message.author.id}`)
         }
