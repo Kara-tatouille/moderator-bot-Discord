@@ -8,12 +8,13 @@ module.exports = {
     usage: 'xp',
     args: 0,
     aliases: [],
+    offChamberOnly: true,
     execute(message, args, connection) {
         connection.query(`SELECT xp FROM user WHERE discord_id = ${message.author.id}`, (firstErr, firstRow) => {
             if (firstRow.length === 0) {
                 return;
             }
-            
+
             connection.query(`SELECT id FROM user WHERE xp >= ${firstRow[0].xp}`, (secondErr, secondRow) => {
                 if (secondRow.length === 0) {
                     return;

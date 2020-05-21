@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const {prefix, token} = require('./config/config');
+const {prefix, token, offChambersId} = require('./config/config');
 const mysql = require('mysql');
 const mysqlConfig = require('./config/mysql');
 const handleXp = require('./helper/handleXp');
@@ -71,6 +71,10 @@ client.on('message', message => {
     // Early return if command is used inside DM instead of in a guild
     if (command.guildOnly && message.channel.type !== 'text') {
         return message.reply('I can\'t execute that command inside DMs!');
+    }
+
+    if (command.offChamberOnly && !offChambersId.includes(message.channel.id)) {
+        return message.react('❌')
     }
 
     // Early return if the command require arguments but there is none
