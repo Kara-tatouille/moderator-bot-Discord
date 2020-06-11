@@ -10,6 +10,8 @@ module.exports = {
     aliases: [],
     offChamberOnly: true,
     execute(message, args, connection) {
+        if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
+
         connection.query(`SELECT xp FROM user WHERE discord_id = ${message.author.id}`, (firstErr, firstRow) => {
             if (firstRow.length === 0) {
                 return;

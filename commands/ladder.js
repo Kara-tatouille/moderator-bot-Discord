@@ -10,6 +10,8 @@ module.exports = {
     offChamberOnly: true,
     execute(message, args, connection)
     {
+        if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
+
         connection.query('SELECT discord_id, xp FROM user ORDER BY xp DESC LIMIT 10', async (err, rows) => {
             const users = []
             for (const row of rows) {
