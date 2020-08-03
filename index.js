@@ -46,7 +46,7 @@ client.on('message', message => {
         test(message);
     }
 
-    if (message.channel.type !== 'text') {
+    if (message.channel.type === 'dm') {
         handleSuggestion(message);
     } else {
         handleXp(message, connection);
