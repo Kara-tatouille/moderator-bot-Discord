@@ -1,4 +1,4 @@
-const quote = require('./quote');
+const quote = require('./embeds/quote');
 const sendToBotChannel = require('./sendToBotChannel');
 const {prefix} = require('../config/config.json');
 

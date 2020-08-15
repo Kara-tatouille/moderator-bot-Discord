@@ -1,6 +1,6 @@
 const mute = require('./mute');
 const ban = require('./ban');
-const quote = require('./quote');
+const quote = require('./embeds/quote');
 const sendToBotChannel = require('./sendToBotChannel');
 
 module.exports = function handleAddWarning(message, connection) {
@@ -8,7 +8,7 @@ module.exports = function handleAddWarning(message, connection) {
 
     connection.query(`SELECT * FROM dofus.user WHERE discord_id = ${message.author.id}`, (err, row) => {
         if (row.length === 0) {
-            connection.query(`INSERT INTO dofus.user (discord_id, warning) VALUES ('${message.author.id}', '1')`)
+            connection.query(`INSERT INTO dofus.user (discord_id, warning, xp) VALUES ('${message.author.id}', '1', '0')`)
         } else {
             connection.query(`UPDATE dofus.user SET warning = warning + 1 WHERE discord_id = ${message.author.id}`)
         }

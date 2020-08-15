@@ -1,8 +1,10 @@
 const fs = require('fs');
+const cron = require('node-cron');
 const Discord = require('discord.js');
 const {prefix, token, offChambersId} = require('./config/config');
 const mysql = require('mysql');
 const mysqlConfig = require('./config/mysql');
+const leaderboardCron = require('cron/leaderboard');
 const handleXp = require('./helper/handleXp');
 const handleLevelUp = require('./helper/handleLevelUp');
 const handleSuggestion = require('./helper/handleSuggestion');
@@ -123,5 +125,10 @@ client.on('message', message => {
         message.reply('there was an error trying to execute that command!');
     }
 });
+
+/* Cron Leaderboard executed every Tuesday 10:00 */
+cron.schedule("0 10 * * 2", function () {
+    leaderboardCron(client);
+}, {})
 
 client.login(token);
