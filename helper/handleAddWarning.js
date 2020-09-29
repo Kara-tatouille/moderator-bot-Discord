@@ -2,21 +2,38 @@ const mute = require('./mute');
 const ban = require('./ban');
 const quote = require('./embeds/quote');
 const sendToBotChannel = require('./sendToBotChannel');
+const {prefix} = require('../config/config.json')
 
-module.exports = function handleAddWarning(message, connection) {
-    if (!message.member || message.member.hasPermission('KICK_MEMBERS') || message.author.bot) return;
+module.exports = function handleAddWarning(message, connection, discordUser, negative = false) {
+    if (message.content[0] !== prefix && (
+        !message.member || message.member.hasPermission('KICK_MEMBERS') || message.author.bot
+    )) {
+        return;
+    }
 
-    connection.query(`SELECT * FROM dofus.user WHERE discord_id = ${message.author.id}`, (err, row) => {
-        if (row.length === 0) {
-            connection.query(`INSERT INTO dofus.user (discord_id, warning, xp) VALUES ('${message.author.id}', '1', '0')`)
-        } else {
-            connection.query(`UPDATE dofus.user SET warning = warning + 1 WHERE discord_id = ${message.author.id}`)
+    const warningNumber = negative ? -1 : 1;
+
+    connection.query(`SELECT * FROM dofus.user WHERE discord_id = ${discordUser.id}`, async (err, row) => {
+        if (row[0].warning === 0 && negative) {
+            return await message.react('🚫');
         }
-        row[0].warning++;
+        if (row.length === 0) {
+            connection.query(`INSERT INTO dofus.user (discord_id, warning, xp) VALUES ('${discordUser.id}', '1', '0')`)
+        } else {
+            connection.query(`UPDATE dofus.user SET warning = warning + ${warningNumber} WHERE discord_id = ${discordUser.id}`)
+        }
+         row[0].warning += warningNumber;
 
         sendToBotChannel(message.client, quote(message, `⚠ Number of warnings: ${row[0].warning}`, 0xffc107));
 
         let whatHappensNext, whatHappensNextFr;
+        if (negative) {
+            discordUser.send(`You have been removed 1 warning, you have ${row[0].warning} warnings left.\n\n1 avertissement vous as été retiré, il vous reste ${row[0].warning} avertissements.`)
+            return await message.delete();
+        }
+
+        const member = await message.guild.members.fetch(discordUser);
+
         switch (row[0].warning) {
             case 1:
                 whatHappensNext = 'Nothing will happen for now, but you will be muted 1 hour the next warning.';
@@ -25,27 +42,27 @@ module.exports = function handleAddWarning(message, connection) {
             case 2:
                 whatHappensNext = 'You have been muted for 1 hour. The next warning will mute you for 1 day.';
                 whatHappensNextFr = 'Vous avez été mis en sourdine pendant une heure. Le prochain avertissement vous rendra muet pendant 1 jour.';
-                mute(message.member, 3.6e+6); // 1 hour
+                mute(member, 3.6e+6); // 1 hour
                 break;
             case 3:
                 whatHappensNext = 'You have been muted for 1 day. The next warning will mute you for 2 days.';
                 whatHappensNextFr = 'Vous avez été mis en sourdine pendant 1 jour. Le prochain avertissement vous rendra muet pendant 2 jours.';
-                mute(message.member, 8.64e+7); // 1 day
+                mute(member, 8.64e+7); // 1 day
                 break;
             case 4:
                 whatHappensNext = 'You have been muted for 2 days. The next warning will ban you for 1 week.';
                 whatHappensNextFr = 'Vous avez été mis en sourdine pendant deux jours. Le prochain avertissement vous bannera pendant une semaine.';
-                mute(message.member, 1.728e+8); // 2 days
+                mute(member, 1.728e+8); // 2 days
                 break;
             case 5:
                 whatHappensNext = 'You have been banned for 1 week. The next warning will ban you indefinitly';
                 whatHappensNextFr = 'Vous avez été interdit de séjour pendant une semaine. Le prochain avertissement vous bannera indéfiniment';
-                ban(message.member, 7, '5th warning'); // 1 week
+                ban(member, 7, '5th warning'); // 1 week
                 break;
             case 6:
                 whatHappensNext = 'You have been banned indefinitly.';
                 whatHappensNextFr = 'Vous avez été banni définitivement.';
-                ban(message.member, 0, '6th warning'); // infinite
+                ban(member, 0, '6th warning'); // infinite
                 break;
             default:
                 whatHappensNext = `Nothing will happen for now, you somehow have ${row[0].warning} warnings, this shouldn't be possible. Please contact a moderator.`;
@@ -54,10 +71,7 @@ module.exports = function handleAddWarning(message, connection) {
                 break;
         }
 
-        if (!message.author.bot) {
-            message.author.send(`You have ${row[0].warning} warning(s). ${whatHappensNext}. \n\nVous avez ${row[0].warning} warning(s). ${whatHappensNextFr}`)
-        }
-
-        message.delete();
+        discordUser.send(`You have ${row[0].warning} warning(s). ${whatHappensNext}. \n\nVous avez ${row[0].warning} warning(s). ${whatHappensNextFr}`)
+        return await message.delete();
     });
 };
