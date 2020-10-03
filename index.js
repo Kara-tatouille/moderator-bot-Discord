@@ -37,8 +37,9 @@ client.on('messageReactionAdd', ((reaction, user) => {
     const guild = reaction.message.guild;
 
     if (reaction.emoji.name === '⚠️' && isModerator(user, guild)) {
-        console.log(reaction.users.cache.last().username + ' warned ' + reaction.message.author.username);
-        handleAddWarning(reaction.message, connection);
+        handleAddWarning(reaction.message, connection, reaction.message.author).finally(() => {
+            console.log(reaction.users.cache.last().username + ' warned ' + reaction.message.author.username);
+        });
     }
 }));
 

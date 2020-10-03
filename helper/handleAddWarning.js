@@ -4,11 +4,11 @@ const quote = require('./embeds/quote');
 const sendToBotChannel = require('./sendToBotChannel');
 const {prefix} = require('../config/config.json')
 
-module.exports = function handleAddWarning(message, connection, discordUser, negative = false) {
+module.exports = async function handleAddWarning(message, connection, discordUser, negative = false) {
     if (message.content[0] !== prefix && (
         !message.member || message.member.hasPermission('KICK_MEMBERS') || message.author.bot
     )) {
-        return;
+        return await message.delete();
     }
 
     const warningNumber = negative ? -1 : 1;
