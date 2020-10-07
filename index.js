@@ -11,6 +11,7 @@ const handleSuggestion = require('./helper/handleSuggestion');
 const handleAddWarning = require('./helper/handleAddWarning');
 const isModerator = require('./helper/isModerator');
 const test = require('./helper/test');
+const handleVoiceStatus = require('./helper/handleVoiceStatus');
 
 
 const client = new Discord.Client();
@@ -31,6 +32,10 @@ connection.connect();
 // Launch event
 client.once('ready', () => {
     console.log(`Logged in as "${client.user.tag}"!`);
+});
+
+client.on('voiceStateUpdate', (oldState, newState) => {
+    handleVoiceStatus(oldState, newState, connection);
 });
 
 client.on('messageReactionAdd', ((reaction, user) => {
