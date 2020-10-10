@@ -5,6 +5,8 @@ const {prefix, token, offChambersId} = require('./config/config');
 const mysql = require('mysql');
 const mysqlConfig = require('./config/mysql');
 const leaderboardCron = require('./cron/leaderboard');
+const voiceLeaderboard = require('./cron/voiceLeaderboard');
+
 const handleXp = require('./helper/handleXp');
 const handleLevelUp = require('./helper/handleLevelUp');
 const handleSuggestion = require('./helper/handleSuggestion');
@@ -135,6 +137,7 @@ client.on('message', message => {
 /* Cron Leaderboard executed every Tuesday 10:00 */
 cron.schedule("0 10 * * 2", function () {
     leaderboardCron(client);
+    voiceLeaderboard(client);
 }, {})
 
 client.login(token);

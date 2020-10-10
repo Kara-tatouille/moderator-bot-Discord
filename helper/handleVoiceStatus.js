@@ -2,6 +2,10 @@ module.exports = function handleXp(oldState, newState, connection) {
     const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     connection.query(`SELECT connected_since, cumulated_connection_time FROM dofus.user WHERE discord_id = ${newState.id}`, (err, row) => {
+        if (!row[0]) {
+            return;
+        }
+
         if (newState.channelID) {
             if (row[0].connected_since === null) {
 
