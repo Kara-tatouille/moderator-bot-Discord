@@ -10,7 +10,7 @@ module.exports = function (client) {
         const users = []
         for (const row of rows) {
             users.push({
-                username: await client.users.fetch(row.discord_id).then(value => value.username),
+                username: await client.users.fetch(row.discord_id).then(value => value.tag),
                 cumulated_connection_time: row.cumulated_connection_time,
             })
         }
