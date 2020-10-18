@@ -14,15 +14,15 @@ module.exports = async function handleAddWarning(message, connection, discordUse
     const warningNumber = negative ? -1 : 1;
 
     connection.query(`SELECT * FROM dofus.user WHERE discord_id = ${discordUser.id}`, async (err, row) => {
-        if (row[0].warning === 0 && negative) {
-            return await message.react('🚫');
-        }
         if (row.length === 0) {
             connection.query(`INSERT INTO dofus.user (discord_id, warning, xp) VALUES ('${discordUser.id}', '1', '0')`)
+            row = [{discord_id: discordUser.id, warning: '1', xp: '0'}]
+        } else if (row[0].warning === 0 && negative) {
+            return await message.react('🚫');
         } else {
             connection.query(`UPDATE dofus.user SET warning = warning + ${warningNumber} WHERE discord_id = ${discordUser.id}`)
         }
-         row[0].warning += warningNumber;
+        row[0].warning += warningNumber;
 
         sendToBotChannel(message.client, quote(message, `⚠ Number of warnings: ${row[0].warning}`, 0xffc107));
 
