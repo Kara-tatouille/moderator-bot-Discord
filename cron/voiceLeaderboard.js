@@ -18,7 +18,7 @@ module.exports = function (client) {
         const embed = createVoiceLeaderboardMessage(users, client);
         const channel = await client.channels.fetch(suggestionChannelId);
 
-        console.log('Ran leaderboard.');
+        console.log('Ran Voice leaderboard.');
         return channel.send(embed);
     })
 }

@@ -3,9 +3,10 @@ const Discord = require('discord.js');
 module.exports = function createVoiceLeaderboardMessage(users, client) {
     let embedFields = []
     for (let i = 0; i < users.length; i++) {
-        const time = new Date(0);
-        time.setSeconds(users[i].cumulated_connection_time);
-        const formatedTime = time.toISOString().substr(11,8);
+        const date = new Date(users[i].cumulated_connection_time * 1000);
+
+        const formatedTime = date.toISOString().substr(8,11).replace('T', ' jours - ');
+        console.log(formatedTime);
 
         if (i <= 2) {
             embedFields.push({
