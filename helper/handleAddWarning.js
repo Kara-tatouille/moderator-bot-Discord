@@ -22,6 +22,8 @@ module.exports = async function handleAddWarning(message, connection, discordUse
         } else {
             connection.query(`UPDATE dofus.user SET warning = warning + ${warningNumber} WHERE discord_id = ${discordUser.id}`)
         }
+
+        row[0].warning = Number.parseInt(row[0].warning);
         row[0].warning += warningNumber;
 
         sendToBotChannel(message.client, quote(message, `⚠ Number of warnings: ${row[0].warning}`, 0xffc107));
