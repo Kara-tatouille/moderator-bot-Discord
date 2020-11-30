@@ -6,6 +6,8 @@ module.exports = {
     args: 0,
     aliases: [],
     execute(message) {
+        message.delete();
+
         return message.channel.send("Tous les mardi, il y a une maintenance hebdomadaire pour permettre de mettre à jour les serveurs du jeu.\n" +
             "C'est pour s'assurer que les serveurs tournent bien et qu'il n'y ai pas de crash durant la semaine.\n" +
             "Du coup, le jeu n'est pas accessible le mardi matin, jusqu'à 11h~12h (il n'y a jamais d'horraire d'ouverture précise, ca dépent du nombre de chose à faire)\n" +
