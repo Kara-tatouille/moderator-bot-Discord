@@ -18,7 +18,6 @@ module.exports = function (client) {
         const embed = createLeaderboardMessage(users, client);
         const channel = await client.channels.fetch(suggestionChannelId);
 
-        console.log('Ran leaderboard.');
-        return channel.send(embed);
+        channel.send(embed).finally(() => process.exit());
     })
 }
