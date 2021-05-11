@@ -18,6 +18,6 @@ module.exports = function (client) {
         const embed = createLeaderboardMessage(users, client);
         const channel = await client.channels.fetch(suggestionChannelId);
 
-        channel.send(embed).finally(() => process.exit());
+        channel.send(embed);
     })
 }
