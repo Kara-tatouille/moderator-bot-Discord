@@ -49,11 +49,18 @@ module.exports = function handleLevelUp(message, connection) {
                     member.roles.add(grades.grade4Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
                 }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
                 break;
-            case xp > 30000: // Diamond
+            case xp < 30000: // Diamond
                 if (currentRanks.has(grades.grade5Id)) break;
 
                 message.member.roles.remove(Object.values(grades)).then(member => {
                     member.roles.add(grades.grade5Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
+                }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
+                break;
+            case xp > 30000: // Obsidian
+                if (currentRanks.has(grades.grade6Id)) break;
+
+                message.member.roles.remove(Object.values(grades)).then(member => {
+                    member.roles.add(grades.grade6Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
                 }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
                 break;
         }
