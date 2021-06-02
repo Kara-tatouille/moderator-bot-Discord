@@ -12,6 +12,6 @@
     "discord.js": "github:discordjs/discord.js",
     "mysql": "^2.18.1",
     "node-cron": "^2.0.3",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1"
   }
 }
