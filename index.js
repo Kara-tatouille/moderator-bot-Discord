@@ -1,6 +1,7 @@
 const fs = require('fs');
 const cron = require('node-cron');
-const Discord = require('discord.js');
+const {Client, Collection} = require('discord.js');
+
 const {prefix, token, offChambersId} = require('./config/config');
 const mysql = require('mysql');
 const mysqlConfig = require('./config/mysql');
@@ -15,16 +16,19 @@ const isModerator = require('./helper/isModerator');
 const test = require('./helper/test');
 const handleVoiceStatus = require('./helper/handleVoiceStatus');
 
-
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
-const cooldowns = new Discord.Collection();
+const client = new Client({
+    ws: {
+        intents: ['GUILDS', 'GUILD_VOICE_STATES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'GUILD_MESSAGES']
+    },
+});
+client.commands = new Collection();
+const cooldowns = new Collection();
 
 // Dynamically set commands to the Collection client.commands
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command)
+    client.commands.set(command.name, command);
 }
 
 //Mysql connection
@@ -84,7 +88,7 @@ client.on('message', message => {
     }
 
     if (command.offChamberOnly && !offChambersId.includes(message.channel.id)) {
-        return message.react('❌')
+        return message.react('❌');
     }
 
     // Early return if the command require arguments but there is none
@@ -103,7 +107,7 @@ client.on('message', message => {
     }
 
     if (!cooldowns.has(command.name)) {
-        cooldowns.set(command.name, new Discord.Collection());
+        cooldowns.set(command.name, new Collection());
     }
 
     const now = Date.now();
@@ -135,9 +139,9 @@ client.on('message', message => {
 });
 
 /* Cron Leaderboard executed every Tuesday 10:00 */
-cron.schedule("0 10 * * 2", function () {
+cron.schedule('0 10 * * 2', function () {
     leaderboardCron(client);
     voiceLeaderboard(client);
-}, {})
+}, {});
 
 client.login(token);
