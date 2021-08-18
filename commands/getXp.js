@@ -5,7 +5,7 @@ module.exports = {
     name: 'getXp',
     description: 'Show xp of target username',
     cooldown: 30,
-    usage: 'xp',
+    usage: 'user-id',
     args: 1,
     aliases: ['getxp'],
     offChamberOnly: true,
@@ -18,10 +18,9 @@ module.exports = {
         } catch (e) {
             return message.channel.send('Utilisateur non trouvé / User not found')
         }
-
-        console.log(args)
-        console.log(target)
-
+        if (!target) {
+            return message.channel.send('Utilisateur non trouvé / User not found')
+        }
 
         connection.query(`SELECT xp FROM user WHERE discord_id = ${target.id}`, (firstErr, firstRow) => {
             if (firstRow.length === 0) {
