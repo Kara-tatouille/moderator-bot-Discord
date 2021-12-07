@@ -32,8 +32,7 @@ for (const file of commandFiles) {
 }
 
 //Mysql connection
-const connection = mysql.createConnection(mysqlConfig);
-connection.connect();
+const connection = mysql.createPool(mysqlConfig);
 
 // Launch event
 client.once('ready', () => {
@@ -141,7 +140,6 @@ client.on('message', message => {
 /* Cron Leaderboard executed every Tuesday 10:00 */
 cron.schedule('0 10 * * 2', function () {
     leaderboardCron(client);
-    voiceLeaderboard(client);
 }, {});
 
 client.login(token);

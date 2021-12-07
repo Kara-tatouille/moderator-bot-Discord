@@ -17,8 +17,8 @@ module.exports = function handleLevelUp(message, connection) {
 
                 message.member.roles.remove(Object.values(grades)).then(member => {
                     member.roles.add(grades.baseRoleId).catch(() => console.log('Bad role id for the LevelUp handling!'))
-                }).catch(() => {
-                    console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades));
+                }).catch((e) => {
+                    console.log(e);
                 });
                 break;
             case xp < 1000: // Copper
@@ -26,42 +26,42 @@ module.exports = function handleLevelUp(message, connection) {
 
                 message.member.roles.remove(Object.values(grades)).then(member => {
                     member.roles.add(grades.grade1Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
-                }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
+                }).catch((e) => console.log(e));
                 break;
             case xp < 3000: // Silver
                 if (currentRanks.has(grades.grade2Id)) break;
 
                 message.member.roles.remove(Object.values(grades)).then(member => {
                     member.roles.add(grades.grade2Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
-                }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
+                }).catch((e) => console.log(e));
                 break;
             case xp < 8000: // Gold
                 if (currentRanks.has(grades.grade3Id)) break;
 
                 message.member.roles.remove(Object.values(grades)).then(member => {
                     member.roles.add(grades.grade3Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
-                }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
+                }).catch((e) => console.log(e));
                 break;
             case xp < 15000: // Platinium
                 if (currentRanks.has(grades.grade4Id)) break;
 
                 message.member.roles.remove(Object.values(grades)).then(member => {
                     member.roles.add(grades.grade4Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
-                }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
+                }).catch((e) => console.log(e));
                 break;
             case xp < 30000: // Diamond
                 if (currentRanks.has(grades.grade5Id)) break;
 
                 message.member.roles.remove(Object.values(grades)).then(member => {
                     member.roles.add(grades.grade5Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
-                }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
+                }).catch((e) => console.log(e));
                 break;
             case xp > 30000: // Obsidian
                 if (currentRanks.has(grades.grade6Id)) break;
 
                 message.member.roles.remove(Object.values(grades)).then(member => {
                     member.roles.add(grades.grade6Id).catch(() => console.log('Bad role id for the LevelUp handling!'))
-                }).catch(() => console.log('Bad role id to remove for the LevelUp handling one of this snowflake is wrong : ' + Object.values(grades)));
+                }).catch((e) => console.log(e));
                 break;
         }
     });

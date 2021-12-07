@@ -73,7 +73,11 @@ module.exports = async function handleAddWarning(message, connection, discordUse
                 break;
         }
 
-        discordUser.send(`You have ${row[0].warning} warning(s). ${whatHappensNext}. \n\nVous avez ${row[0].warning} warning(s). ${whatHappensNextFr}`)
-        return await message.delete();
+        try {
+            discordUser.send(`You have ${row[0].warning} warning(s). ${whatHappensNext}. \n\nVous avez ${row[0].warning} warning(s). ${whatHappensNextFr}`)
+        } catch (e) {
+            // DM failed to be sent, do nothing
+        }
+        return message.delete();
     });
 };
